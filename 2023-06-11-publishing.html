@@ -60,7 +60,7 @@
   Publishing this blog
   
 </h1>
-<p>In my previous post, I got quickblog working! Woo! But I still need somewhere to publish it... so you wonderful people can read it!</p><p>I’ve chosen to use <a href='https://pages.github.com/'>github pages</a>.</p><p>I’ve been giving some thought to how to structure my code; and I have decided to try:</p><ul><li>this repo <a href='https://github.com/tim-brown/my-blog'>tim-brown/my-blog</a>  where I can manage the blog’s source etc.</li><li>my personal pages repo  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>,  as a submodule of <strong>my-blog</strong></li></ul><p>I think that &mdash; in the spirit of simplicity &mdash; having the pages repo composed with the blogging repo in this way is explicit, and (once I’ve got my head around <a href='https://git-scm.com/book/en/v2/Git-Tools-Submodules'>git submodules</a>).</p><p>It also has the advantage that, should I ever want to make <strong>my-blog</strong> private, I can.</p><h1>So what have I done?</h1><h2>Set up my-blog repo with my quickblog blog</h2><p>&#x2611; Did that in the last post.</p><h2>Create an empty repo for pages</h2><p>As per the instructions on github, I have created an empty repo:  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>.</p><h2>Make it a submodule of my-blog</h2><pre><code class="lang-bash">cd my-blog
+<p>In my previous post, I got quickblog working! Woo! But I still need somewhere to publish it… so you wonderful people can read it!</p><p>I’ve chosen to use <a href='https://pages.github.com/'>github pages</a>.</p><!-- end-of-preview --> </p><p>I’ve been giving some thought to how to structure my code; and I have decided to try:</p><ul><li>this repo <a href='https://github.com/tim-brown/my-blog'>tim-brown/my-blog</a>  where I can manage the blog’s source etc.</li><li>my personal pages repo  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>,  as a submodule of <strong>my-blog</strong></li></ul><p>I think that &mdash; in the spirit of simplicity &mdash; having the pages repo composed with the blogging repo in this way is explicit, and (once I’ve got my head around <a href='https://git-scm.com/book/en/v2/Git-Tools-Submodules'>git submodules</a>).</p><p>It also has the advantage that, should I ever want to make <strong>my-blog</strong> private, I can.</p><h1>So what have I done?</h1><h2>Set up my-blog repo with my quickblog blog</h2><p>&#x2611; Did that in the last post.</p><h2>Create an empty repo for pages</h2><p>As per the instructions on github, I have created an empty repo:  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>.</p><h2>Make it a submodule of my-blog</h2><pre><code class="lang-bash">cd my-blog
 git submodule add git@github.com:tim-brown/tim-brown.github.io.git 
 git commit -m 'publish: add personal pages submodule'
 git push
@@ -69,7 +69,24 @@ git push
                    :blog-root …
                    :out-dir &quot;tim-brown.github.io&quot;}&#41;
 </code></pre><p>I also need to tidy up the old <code>public</code> directory. We put it into <code>.gitignore</code> last time; so this is just cleanup:<pre><code class="lang-bash">rm -rf public
-</code></pre></p><h2>And publish?!</h2><p>I think all I now need to do is commit and push the changes in <code>tim-brown.github.io</code></p><h1>TODOs</h1><ul><li>backlink to previous article (and figure out how to make that work both  locally and on production site)</li></ul>
+</code></pre></p><h2>And publish?!</h2><p>I think all I now need to do is commit and push the changes in <code>tim-brown.github.io</code>.</p><p>Fingers crossed:<pre><code class="lang-bash">git add .
+git commit -am 'initial blog commit'
+git push
+</code></pre></p><p>Browse… <a href='https://tim-brown.github.io'>https://tim-brown.github.io</a></p><p>Woo hoo! It’s alive!</p><h2>And finally a bit of tidyup…</h2><pre><code class="lang-bash">cd …/my-blog
+# changes we made to :out-dir
+git add bb.edn
+# the new post
+git add posts/2023-06-11-publishing.md
+# the new submodule commit
+git add tim-brown.github.io
+</code></pre><p>(This is a bit misleading, because as I continue to write this entry &mdash; after publication, I continue to get):<pre><code class="lang-bash">git status
+
+Changes not staged for commit:
+  &#40;use &quot;git add &lt;file&gt;...&quot; to update what will be committed&#41;
+  &#40;use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory&#41;
+  &#40;commit or discard the untracked or modified content in submodules&#41;
+	modified:   tim-brown.github.io &#40;modified content&#41;
+</code></pre></p><p><code>&#40;modified content&#41;</code> is because I have a <code>bb quicklog watch</code> tracking changes in my post, and building the site into the submodule. This is great… it means I have to continue to commit and push the submodule until the published site matches the source.</p><p>So I won’t bore you with “going through the cycle until it’s all settled”.</p><h1>Call to Action</h1><p>I’m going to put an explicit CTA at the end of each of my blog posts. Not so you buy something (not that I have anything to sell &mdash; yet), but because there is no point me writing here if you don’t take anything from it.</p><p>So today… I’m asking you to feed back any bugs you find on this site. Let me know on the Disqus below (and prove it works).</p><h1>For the future (and to-do list)</h1><ul><li>backlink to previous article (and figure out how to make that work both  locally and on production site)</li><li>this looks eminently scriptable; for now I’ll probably bump along manually  building the site (the publish workflow is, after all, an “end of day” activity)…  I want to get on with some proper content!</li></ul>
 <p>Discuss this post <a href="">here</a>.</p>
 <p><i>Published: 2023-06-11</i></p>
 
