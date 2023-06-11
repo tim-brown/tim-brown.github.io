@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Publishing this blog</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="application/atom+xml" rel="alternate" href="atom.xml" title="Publishing this blog">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-clojure.min.js"></script>
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css">
+
+
+
+    <!-- Social sharing (Facebook, Twitter, LinkedIn, etc.) -->
+    <meta name="title" content="Publishing this blog">
+    <meta name="twitter:title" content="Publishing this blog">
+    <meta property="og:title" content="Publishing this blog">
+    <meta property="og:type" content="website">
+
+
+    <meta name="twitter:url" content="https://tim-brown.github.io/2023-06-11-publishing.html">
+    <meta property="og:url" content="https://tim-brown.github.io/2023-06-11-publishing.html">
+    <script>const sharingUrl = "https://tim-brown.github.io/2023-06-11-publishing.html"</script>
+
+
+    <meta name="twitter:card" content="summary">
+
+
+
+  </head>
+  <body>
+
+    <div class="site-header">
+      <div class="wrapper">
+        <div class="site-nav">
+          <a class="page-link" href="archive.html">Archive</a>
+          <a class="page-link" href="tags/index.html">Tags</a>
+          <a class="page-link" href="">Discuss</a>
+	  <a class="page-link" href="atom.xml">
+            Feed
+          </a>
+	  
+	  
+        </div>
+        <div>
+          <h1 class="site-title">
+            <a class="page-link" href="index.html">Tim Brown’s Blog</a>
+          </h1>
+	  <p>A simple blog. About simple things.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrapper">
+
+      <h1>
+  
+  Publishing this blog
+  
+</h1>
+<p>In my previous post, I got quickblog working! Woo! But I still need somewhere to publish it... so you wonderful people can read it!</p><p>I’ve chosen to use <a href='https://pages.github.com/'>github pages</a>.</p><p>I’ve been giving some thought to how to structure my code; and I have decided to try:</p><ul><li>this repo <a href='https://github.com/tim-brown/my-blog'>tim-brown/my-blog</a>  where I can manage the blog’s source etc.</li><li>my personal pages repo  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>,  as a submodule of <strong>my-blog</strong></li></ul><p>I think that &mdash; in the spirit of simplicity &mdash; having the pages repo composed with the blogging repo in this way is explicit, and (once I’ve got my head around <a href='https://git-scm.com/book/en/v2/Git-Tools-Submodules'>git submodules</a>).</p><p>It also has the advantage that, should I ever want to make <strong>my-blog</strong> private, I can.</p><h1>So what have I done?</h1><h2>Set up my-blog repo with my quickblog blog</h2><p>&#x2611; Did that in the last post.</p><h2>Create an empty repo for pages</h2><p>As per the instructions on github, I have created an empty repo:  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>.</p><h2>Make it a submodule of my-blog</h2><pre><code class="lang-bash">cd my-blog
+git submodule add git@github.com:tim-brown/tim-brown.github.io.git 
+git commit -m 'publish: add personal pages submodule'
+git push
+</code></pre><h2>Change the publshing target for quickblog</h2><p>I now want to publish to the <code>tim-brown.github.io</code> submodule, rather than <code>public</code>, which is what quickblog does by default.</p><p>Change to <code>bb.edn</code>:</p><pre><code class="lang-clojure">  :init &#40;def opts {:blog-title …
+                   :blog-description …
+                   :blog-root …
+                   :out-dir &quot;tim-brown.github.io&quot;}&#41;
+</code></pre><p>I also need to tidy up the old <code>public</code> directory. We put it into <code>.gitignore</code> last time; so this is just cleanup:<pre><code class="lang-bash">rm -rf public
+</code></pre></p><h2>And publish?!</h2><p>I think all I now need to do is commit and push the changes in <code>tim-brown.github.io</code></p><h1>TODOs</h1><ul><li>backlink to previous article (and figure out how to make that work both  locally and on production site)</li></ul>
+<p>Discuss this post <a href="">here</a>.</p>
+<p><i>Published: 2023-06-11</i></p>
+
+<p>
+  <i>
+  Tagged:
+  
+  <span class="tag">
+    <a href="tags/quickblog.html">quickblog</a>
+  </span>
+  
+  <span class="tag">
+    <a href="tags/blog.html">blog</a>
+  </span>
+  
+  <span class="tag">
+    <a href="tags/github-pages.html">github-pages</a>
+  </span>
+  
+  </i>
+</p>
+
+    <div id="disqus_thread"></div>
+    <script>
+	   var disqus_config = function () {
+			       this.page.url = sharingUrl; 
+			       this.page.identifier = "2023-06-11-publishing.md";
+	   };
+	    (function() { // DON'T EDIT BELOW THIS LINE
+				var d = document, s = d.createElement('script');
+				s.src = 'https://tim-brown-github-pages.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', +new Date());
+				(d.head || d.body).appendChild(s);
+			})();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+      
+      <div style="margin-bottom: 20px; float: right;">
+        <a class="page-link" href="archive.html">Archive</a>
+      </div>
+      
+    </div>
+  </body>
+</html>

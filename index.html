@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tim Brown’s Blog</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="application/atom+xml" rel="alternate" href="atom.xml" title="Tim Brown’s Blog">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-clojure.min.js"></script>
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css">
+
+
+
+    <!-- Social sharing (Facebook, Twitter, LinkedIn, etc.) -->
+    <meta name="title" content="Tim Brown’s Blog">
+    <meta name="twitter:title" content="Tim Brown’s Blog">
+    <meta property="og:title" content="Tim Brown’s Blog">
+    <meta property="og:type" content="website">
+
+    <meta name="description" content="A simple blog. About simple things.">
+    <meta name="twitter:description" content="A simple blog. About simple things.">
+    <meta property="og:description" content="A simple blog. About simple things.">
+
+
+    <meta name="twitter:url" content="https://tim-brown.github.io/index.html">
+    <meta property="og:url" content="https://tim-brown.github.io/index.html">
+    <script>const sharingUrl = "https://tim-brown.github.io/index.html"</script>
+
+
+    <meta name="twitter:card" content="summary">
+
+
+
+  </head>
+  <body>
+
+    <div class="site-header">
+      <div class="wrapper">
+        <div class="site-nav">
+          <a class="page-link" href="archive.html">Archive</a>
+          <a class="page-link" href="tags/index.html">Tags</a>
+          <a class="page-link" href="">Discuss</a>
+	  <a class="page-link" href="atom.xml">
+            Feed
+          </a>
+	  
+	  
+        </div>
+        <div>
+          <h1 class="site-title">
+            <a class="page-link" href="index.html">Tim Brown’s Blog</a>
+          </h1>
+	  <p>A simple blog. About simple things.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrapper">
+
+      
+    <div>
+        <h1><a href="2023-06-11-publishing.html">Publishing this blog</a></h1>
+        <p>In my previous post, I got quickblog working! Woo! But I still need somewhere to publish it... so you wonderful people can read it!</p><p>I’ve chosen to use <a href='https://pages.github.com/'>github pages</a>.</p><p>I’ve been giving some thought to how to structure my code; and I have decided to try:</p><ul><li>this repo <a href='https://github.com/tim-brown/my-blog'>tim-brown/my-blog</a>  where I can manage the blog’s source etc.</li><li>my personal pages repo  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>,  as a submodule of <strong>my-blog</strong></li></ul><p>I think that &mdash; in the spirit of simplicity &mdash; having the pages repo composed with the blogging repo in this way is explicit, and (once I’ve got my head around <a href='https://git-scm.com/book/en/v2/Git-Tools-Submodules'>git submodules</a>).</p><p>It also has the advantage that, should I ever want to make <strong>my-blog</strong> private, I can.</p><h1>So what have I done?</h1><h2>Set up my-blog repo with my quickblog blog</h2><p>&#x2611; Did that in the last post.</p><h2>Create an empty repo for pages</h2><p>As per the instructions on github, I have created an empty repo:  <a href='https://github.com/tim-brown/tim-brown.github.io'>tim-brown/tim-brown.github.io</a>.</p><h2>Make it a submodule of my-blog</h2><pre><code class="lang-bash">cd my-blog
+git submodule add git@github.com:tim-brown/tim-brown.github.io.git 
+git commit -m 'publish: add personal pages submodule'
+git push
+</code></pre><h2>Change the publshing target for quickblog</h2><p>I now want to publish to the <code>tim-brown.github.io</code> submodule, rather than <code>public</code>, which is what quickblog does by default.</p><p>Change to <code>bb.edn</code>:</p><pre><code class="lang-clojure">  :init &#40;def opts {:blog-title …
+                   :blog-description …
+                   :blog-root …
+                   :out-dir &quot;tim-brown.github.io&quot;}&#41;
+</code></pre><p>I also need to tidy up the old <code>public</code> directory. We put it into <code>.gitignore</code> last time; so this is just cleanup:<pre><code class="lang-bash">rm -rf public
+</code></pre></p><h2>And publish?!</h2><p>I think all I now need to do is commit and push the changes in <code>tim-brown.github.io</code></p><h1>TODOs</h1><ul><li>backlink to previous article (and figure out how to make that work both  locally and on production site)</li></ul>
+        
+        
+        <p><i>Published: 2023-06-11</i></p>
+        
+            <p><i>
+                Tagged:
+                
+                    <span class="tag">
+                        <a href="tags/quickblog.html">quickblog</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="tags/blog.html">blog</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="tags/github-pages.html">github-pages</a>
+                    </span>
+                
+            </i></p>
+        
+    </div>
+
+    <div>
+        <h1><a href="2023-06-06-getting-started-with-quickblog.html">My first blog entry for a while</a></h1>
+        <p>So... I’ve decided to get back on the blogging horse, but I’ve been dragging my feet a bit figuring out what blogging platform to use.</p><p>I’ve had previous experience with gitlab pages... and a long time ago <a href='https://docs.racket-lang.org/frog/index.html'>racket frog</a>. Which is awesome, but as far as I can tell, no longer supported by the author. And my general trajectory is Clojure-wards.</p><p>I need a blogging tool, implemented in Clojure, that will work with gitlab pages.<br /> A quick google search of “babashka blog framework” threw up <a href='https://github.com/borkdude/quickblog'>quickblog</a>. Deep breath, what’s that going to look like?</p><p>The readme looks really simple (disclosure, I already have babashka and Clojure installed on my local machine, and I’m pretty happy with the idea of configuring my environment with a <code>bb.edn</code> (or <code>deps.clj</code>)). So:</p><ul><li>Created an empty github repo to hold the blog</li><li>I basically copied the <code>bb.edn</code></li><li>Customised it with an updated github sha (<code>792f952be8fe0f3326b293dde3251f6a09deaf0c</code> today, who knows what it will be for you)</li><li>And pretty well, this thing works out of the box!</li></ul><p>Further customisation of <code>bb.edn</code> was to “personalise” the blog:</p><ul><li>Updated the <code>:blog-title</code> and <code>:blog-description</code> keys</li></ul><p>And after that:<pre><code class="lang-bash">bb quickblog new --file &quot;2023-06-06-test.md&quot; --title &quot;My first blog entry for a while&quot;
+</code></pre></p><p>created a new file in (an automatically created) <code>posts/</code>.</p><p>I edit the new file in one terminal; and in another I run:<pre><code class="lang-bash">bb quickblog watch
+</code></pre></p><p>And now I have the blog post... with live updates; and a few todos:</p><ul><li>Write the content!</li><li>Discuss (I need to set up Disqus)</li><li>Publishing to pages</li><li>PR to allow <code>:footnote?</code> to be passed to <code>md/md-to-html-string</code>: I tried to use a footnote, but instead it gave me superscript. That’s a choice that should be given to the author of the document.</li><li>Styles and favicons</li></ul><h2>Write the content</h2><p>On it &mdash; that’s what this post is!</p><h2>Setting up Disqus</h2><ul><li>set up (or revive) the Disqus account</li><li>set up a “site”</li><li>follow the install instructions for “Universal Code” for the site</li><li>add the code Disqus provides to <code>templates/post.html</code> (wherever you think you need it)</li><li>I had to change the code to set the <code>this.page.url</code> and <code>this.page.identifier</code>. To do this, you need to activate the <code>disqus&#95;config</code> section of the universal code and replace it with:<pre><code class="lang-javascript">   var disqus&#95;config = function &#40;&#41; {
+     this.page.url = sharingUrl; 
+     this.page.identifier = &quot;{{file}}&quot;;
+   };
+   </code></pre>  this only goes so far, though because I couldn’t find a way to get the page’s URL into the page template using the <i>Selmer</i> templating (worth further investigation). I could get it in <code>templates/base.html</code>; so around line 29 there...<pre><code class="lang-html">   {% if sharing.url %}
+       &lt;meta name=&quot;twitter:url&quot; content=&quot;{{sharing.url}}&quot;&gt;
+       &lt;meta property=&quot;og:url&quot; content=&quot;{{sharing.url}}&quot;&gt;
+       &lt;script&gt;const sharingUrl = &quot;{{sharing.url}}&quot;&lt;/script&gt;
+   {% endif %}
+  </code></pre></li></ul><p>I have to figure out what the “Discus this post” link is.</p><h2>Publishing on pages</h2><p>I am now at: <code>Tue  6 Jun 20:14:23 BST 2023</code> &mdash; 2 hours in (and that includes blogging!)</p><p>I don’t have this pushed up to github pages yet... that’s one for tomorrow. But, wow... so far this has been properly smooth! I’m impressed.</p><h2>First... check it in!</h2><p>So far, I’ve generated the following files:</p><pre><code>.
+./posts
+./posts/2023-06-06-test.md
+./templates
+./templates/post.html
+./templates/post-links.html
+./templates/tags.html
+./templates/index.html
+./templates/style.css
+./templates/base.html
+./.work
+./.work/2023-06-06-test.md.pre-template.html
+./.work/cache.edn
+./.gitignore
+./LICENSE
+./README.md
+./public
+./public/planetclojure.xml
+./public/atom.xml
+./public/tags
+./public/tags/clojure.html
+./public/tags/clojure-blogging.html
+./public/tags/blogging.html
+./public/tags/index.html
+./public/archive.html
+./public/2023-06-06-test.html
+./public/index.html
+./public/style.css
+./bb.edn
+</code></pre><p>I need to <code>.gitignore</code>:</p><ul><li><code>.work</code></li><li><code>public</code> (dunno if I have to un-gitignore this later... we’ll see)</li></ul><p>The rest needs to be source controlled.</p><p>Great... committing my blog for the evening!<pre><code class="lang-bash">git add .gitignore README.md bb.edn posts/ templates
+</code></pre></p>
+        
+        
+        <p><i>Published: 2023-06-06</i></p>
+        
+            <p><i>
+                Tagged:
+                
+                    <span class="tag">
+                        <a href="tags/clojure.html">clojure</a>
+                    </span>
+                
+                    <span class="tag">
+                        <a href="tags/blogging.html">blogging</a>
+                    </span>
+                
+            </i></p>
+        
+    </div>
+
+
+
+      
+      <div style="margin-bottom: 20px; float: right;">
+        <a class="page-link" href="archive.html">Archive</a>
+      </div>
+      
+    </div>
+  </body>
+</html>
